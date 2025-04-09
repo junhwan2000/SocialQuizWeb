@@ -29,9 +29,11 @@
 	          <a class="nav-link" href="quiz/startword">끝말잇기</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="#">랭킹</a>
+	          <a class="nav-link" href="rank">랭킹</a>
 	        </li>
-	        
+	       	<li class="nav-item">
+	          <a class="nav-link" href="#">전적 조회</a>
+	        </li>
 	       </ul>
 	      <a class="navbar-brand" href="#">	      
 		  	<img src="${project}images/socialQuiz.png" alt="img" class="center-img">
@@ -74,9 +76,10 @@
 		
 		</div>
 		<img src="${project}images/teamFruit.jpg" alt="img" class="image" >
-		<div class="div3"> 
-			<h1 class="home"> 실시간 순위 </h1>  			           
-		</div>	
+		<div class="div3">
+		    <h1 class="home">실시간 순위</h1>
+		    <jsp:include page="/board/rankView.jsp" flush="true" />
+		</div>
 		<div class="div4" name="loginSession">
 <c:if test="${memId eq null}">
 	<p class="d-inline-flex gap-1">

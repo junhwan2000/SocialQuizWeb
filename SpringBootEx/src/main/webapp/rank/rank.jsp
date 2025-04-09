@@ -1,0 +1,107 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>종합 랭킹</title>
+    <link rel="stylesheet" type="text/css" href="/rank/style_rank.css">
+</head>
+<body>
+
+<!-- 게임 선택 및 나가기 -->
+<div class="filter-bar" style="margin: 20px;">
+    <form method="get" action="rank.jsp" style="display:inline;">
+        <select name="game_id" onchange="this.form.submit()">
+            <option value="1" <%= "1".equals(request.getParameter("game_id")) ? "selected" : "" %>>OX게임</option>
+            <option value="2" <%= "2".equals(request.getParameter("game_id")) ? "selected" : "" %>>끝말잇기</option>
+            <option value="3" <%= "3".equals(request.getParameter("game_id")) ? "selected" : "" %>>라이어 게임</option>
+        </select>
+    </form>
+    <button onclick="location.href='/logonmain'" class="action-btn" style="float: right; background-color: #4CAF50;">나가기</button>
+</div>
+
+<%
+    Connection con = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    String gameName = "게임";
+
+    try {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        String dbid = "quiz";
+        String dbpasswd = "quiz";
+        con = DriverManager.getConnection(url, dbid, dbpasswd);
+        stmt = con.createStatement();
+
+        String gameId = request.getParameter("game_id");
+        if (gameId == null) gameId = "1";
+
+        // 게임 이름 가져오기
+        ResultSet gameRs = stmt.executeQuery("SELECT game_name FROM Games WHERE game_id = " + gameId);
+        if (gameRs.next()) {
+            gameName = gameRs.getString("game_name");
+        }
+        gameRs.close();
+
+        // 랭킹 정보 가져오기
+        String sql = "SELECT m.nickname, r.rank_score, r.rank_time " +
+                     "FROM Ranks r JOIN Members m ON r.userId = m.userId " +
+                     "WHERE r.game_id = " + gameId + " ORDER BY r.rank_score DESC";
+
+        rs = stmt.executeQuery(sql);
+%>
+
+<div class="ranking-container">
+    <h1 class="ranking-title"><%= gameName %> 랭킹</h1>
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>순위</th>
+                <th>프로필</th>
+                <th>닉네임</th>
+                <th>점수</th>
+                <th>시간</th>
+                <th>상태</th>
+                <th>정보</th>
+            </tr>
+        </thead>
+        <tbody>
+        <%
+            int rank = 1;
+            while (rs.next()) {
+                String rankClass = "";
+                if (rank == 1) rankClass = "first-place";
+                else if (rank == 2) rankClass = "second-place";
+                else if (rank == 3) rankClass = "third-place";
+        %>
+            <tr class="<%= rankClass %>">
+                <td><%= rank %></td>
+                <td><img src="<%= request.getContextPath() %>/images/sample_profile.png" class="profile-img" alt="profile"></td>
+                <td><%= rs.getString("nickname") %></td>
+                <td><%= rs.getInt("rank_score") %></td>
+                <td><%= rs.getInt("rank_time") %>초</td>
+                <td><div class="status-dot"></div></td>
+                <td><button class="action-btn">정보</button></td>
+            </tr>
+        <%
+                rank++;
+            }
+        %>
+        </tbody>
+    </table>
+</div>
+
+<%
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
+        if (con != null) con.close();
+    }
+%>
+
+</body>
+</html>

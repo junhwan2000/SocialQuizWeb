@@ -1,0 +1,85 @@
+.ranking-title {
+    font-size: 30px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.ranking-container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+       border: 1px solid #ddd;
+       border-radius: 10px;
+       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+       padding: 20px;
+    
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;  
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    border-radius: 12px;     
+    overflow: hidden;     
+}
+
+/* 헤더/바디 공통 스타일 */
+.ranking-table th,
+.ranking-table td {
+    border: none; 
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* 테이블 헤더 */
+.ranking-table thead th {
+    background-color: #000;  
+    color: #fff;           
+    border-bottom: 1px solid #ddd; 
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* 프로필 이미지 (원형) */
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* 상태 표시점 (빨간 원) */
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: red;
+    margin: 0 auto;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    background-color: #888;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.action-btn:hover {
+    background-color: #555;
+}
+
+.first-place td {
+    background-color: gold;
+    font-weight: bold;
+}
+.second-place td {
+    background-color: silver;
+    font-weight: bold;
+}
+.third-place td {
+    background-color: #cd7f32; 
+    font-weight: bold;
+}

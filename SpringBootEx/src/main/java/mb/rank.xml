@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rank.RankMapper">
+
+  <select id="getRankList" parameterType="int" resultType="rank.RankDataBean">
+    SELECT m.nickname, r.rank_score, r.rank_time
+    FROM Ranks r
+    JOIN Members m ON r.userId = m.userId
+    WHERE r.game_id = #{gameId}
+    ORDER BY r.rank_score DESC
+  </select>
+
+  <select id="getGameNameById" parameterType="int" resultType="string">
+    SELECT game_name FROM Games WHERE game_id = #{gameId}
+  </select>
+
+</mapper>
