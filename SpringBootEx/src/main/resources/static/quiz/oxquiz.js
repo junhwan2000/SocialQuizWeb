@@ -10,17 +10,17 @@ const tspan = document.querySelector("#timeout");	// 마지막문제를 풀어�
 const qdiv = document.querySelector(".question");	// 마지막문제를 시간초과해서 게임 끝나는거 구현하려고 변수 밖으로 뺌
 
 // OX 점수 랭크 연동
-function submitScore( userId, game_id, rank_score, rank_time ) {
+function submitScore( game_id, userId, record_time, game_score ) {
 	fetch( "/quiz/startox", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
 		},
 		body:  JSON.stringify({
-			userId: userId,
 			game_id: game_id,
-			rank_score: rank_score,
-			rank_time: rank_time
+			userId: userId,
+			record_time: record_time,
+			game_score: game_score
 		})
 		
 	})
@@ -37,8 +37,8 @@ function submitScore( userId, game_id, rank_score, rank_time ) {
 	});
 }
 
-//    
-function showQuestion(index) {		// 문제보여주는거
+// 문제보여주는거 
+function showQuestion(index) {		
     if (index < quizData.length) {
         qdiv.innerText = quizData[index].question;
     } else {
@@ -72,9 +72,9 @@ function startTimer() {
 			// num 값을 서버에 넘겨야 함
 			const userId = document.querySelector( "#userId" )?.value;
 			const game_id = 1;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
-			const rank_score = num;
-			const rank_time = 100; // 총 플레이 시간을 넣어야 함.
-			submitScore(userId, game_id, rank_score, rank_time);
+			const game_score = num;
+			const record_time = 100; // 총 플레이 시간을 넣어야 함.
+			submitScore( game_id, userId, record_time, game_score);
 				
             }
         }
@@ -111,9 +111,9 @@ function checkAnswer(userInput) {		// 정답체크
 		// num 값을 서버에 넘겨야 함
 		const userId = document.querySelector( "#userId" )?.value;
 		const game_id = 1;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
-		const rank_score = num;
-		const rank_time = 100; // 총 플레이 시간을 넣어야 함.
-		submitScore(userId, game_id, rank_score, rank_time);
+		const game_score = num;
+		const record_time = 100; // 총 플레이 시간을 넣어야 함.
+		submitScore( game_id, userId, record_time, game_score);
     }
 }
 

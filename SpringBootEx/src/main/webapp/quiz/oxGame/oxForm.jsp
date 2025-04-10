@@ -8,7 +8,7 @@
 	    <meta charset="UTF-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="oxForm.css" />
-	    <title>퀴즈 게임</title>
+	    <title>OX 퀴즈</title>
 	</head>
 	<body>
 		<input type="hidden" id="userId" value="${memId}" />

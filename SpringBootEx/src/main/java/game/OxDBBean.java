@@ -10,5 +10,9 @@ public class OxDBBean {
 	
 	public List<OxDataBean> getOxQuiz(){
         return oxMapper.getOxQuiz(); 
+	}
+        
+    public int submitScore( OxDataBean oxDto ) {
+    	return oxMapper.submitScore();
     }
 }

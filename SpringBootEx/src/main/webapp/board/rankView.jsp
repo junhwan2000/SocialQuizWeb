@@ -17,10 +17,13 @@ try {
     stmt = con.createStatement();
     
     // OX게임만 랭킹 조회 (game_id=1)
-    String sql = "SELECT m.nickname, r.rank_score, r.rank_time " +
-                 "FROM Ranks r JOIN Members m ON r.userId = m.userId " +
-                 "WHERE r.game_id = 1 " +
-                 "ORDER BY r.rank_score DESC";
+    String sql = "SELECT m.nickname, MAX(gr.game_score) AS rank_score, " +
+		             "SUM(gr.record_time) AS rank_time " +
+		             "FROM Members m " +
+		             "JOIN game_records gr ON m.userId = gr.userId " +
+		             "WHERE gr.game_id = " + 1 + " " +
+		             "GROUP BY m.nickname " +
+		             "ORDER BY rank_score DESC";
     
     rs = stmt.executeQuery(sql);
 %>

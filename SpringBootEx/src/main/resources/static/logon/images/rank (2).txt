@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>종합 랭킹</title>
-    <link rel="stylesheet" type="text/css" href="/rank/style_rank.css">
+    <link rel="stylesheet" type="text/css" href="style_rank.css">
 </head>
 <body>
 
@@ -46,14 +46,9 @@
         gameRs.close();
 
         // 랭킹 정보 가져오기
-        // 랭킹 정보 가져오기 - 최고 점수 기준으로
-		String sql = "SELECT m.nickname, MAX(gr.game_score) AS rank_score, " +
-		             "SUM(gr.record_time) AS rank_time " +
-		             "FROM Members m " +
-		             "JOIN game_records gr ON m.userId = gr.userId " +
-		             "WHERE gr.game_id = " + gameId + " " +
-		             "GROUP BY m.nickname " +
-		             "ORDER BY rank_score DESC";
+        String sql = "SELECT m.nickname, r.rank_score, r.rank_time " +
+                     "FROM Ranks r JOIN Members m ON r.userId = m.userId " +
+                     "WHERE r.game_id = " + gameId + " ORDER BY r.rank_score DESC";
 
         rs = stmt.executeQuery(sql);
 %>
@@ -66,7 +61,7 @@
                 <th>순위</th>
                 <th>프로필</th>
                 <th>닉네임</th>
-                <th>최고점수</th>
+                <th>점수</th>
                 <th>시간</th>
                 <th>상태</th>
                 <th>정보</th>
