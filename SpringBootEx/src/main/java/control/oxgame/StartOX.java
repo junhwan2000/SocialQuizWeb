@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import rank.RankDBBean;
-import rank.RankDataBean;
+import game.OxDBBean;
+import game.OxDataBean;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 
@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("quiz/startox")
 public class StartOX {
 	@Resource
-	private RankDBBean rankDao;
+	private OxDBBean oxDao;
 
 	@GetMapping
 	public String oxForm() {
@@ -24,10 +24,14 @@ public class StartOX {
 	}
 	
 	@PostMapping
-	public String oxPro( @RequestBody RankDataBean rankDto, Model model, HttpSession session ) throws Exception {
-		int result = rankDao.insertRank(rankDto);
+	public String oxPro( @RequestBody OxDataBean oxDto, Model model, HttpSession session ) throws Exception {
+//		String memId = (String) session.getAttribute( "memId" );
+//		if ( memId != null ) {
+//			oxDto.setUserId(memId);
+//		}
+		int result =  oxDao.submitScore(oxDto);
 		if( result == 1 )
-			session.setAttribute( "memId", rankDto.getUserId() );
+			session.setAttribute( "memId", oxDto.getUserId() );
 		model.addAttribute( "result", result );
 		return "quiz/oxGame/oxPro";
 	}

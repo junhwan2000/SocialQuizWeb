@@ -11,13 +11,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LogonDataBean {
-	private String user_id;
 	private String userId;
 	private String passwd;
 	private String nickname;
+	private String auth;
 	private String email;
 	private Timestamp created_at;
-	private String auth;
+	private Timestamp deleted_at;
+	private char blockId;
+
 }
 
 

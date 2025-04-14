@@ -1,69 +1,129 @@
 @charset "UTF-8";
 
+body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
 .container {
-	display: grid;
-	border: 1px solid blue;
-	grid-template-columns: repeat(6, 1fr);
-	grid-template-rows: 100px 550px repeat(1, 300px) 100px;
-	grid-column-gap: 10px;
-	grid-row-gap: 5px;
-	grid-template-areas:
-		"a a a a a a"
-		"b b c c d d"
-		"e e e f f f"
-		"g g g g g g";
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 100px 550px 300px 100px;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    grid-template-areas:
+        "a a a a a a"
+        "b b c c d d"
+        "e e e f f f"
+        "g g g g g g";
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .container div {
-	border: 1px solid gray;
-	justify-content: center;
-	align-items: center;
-	font-size: 1.2rem;
-	font-weight: bold;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-.div1 { grid-area: a; }
+.div1 {
+    grid-area: a;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: white;
+    text-align: center;
+    line-height: 100px;
+    border-radius: 12px;
+}
+
 .div2 { grid-area: b; }
 .div3 { grid-area: c; }
-.div4 { grid-area: d;  display: flex; justify-content: center; }
+.div4 {
+    grid-area: d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .div5 { grid-area: e; }
 .div6 { grid-area: f; }
 .div7 { grid-area: g; }
 
 .div4 button {
-  font-size: 20px;  /* 글자 크기 */
-  padding: 15px 30px;  /* 안쪽 여백 (버튼 크기 확대) */
-  width: 280px; /* 버튼 너비 */
-  height: 280px; /* 버튼 높이 */
+  font-size: 1.2rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: #6a8dff;
+  color: white;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, font-size 0.3s ease;
 }
 
+/* 화면 너비가 넓을 때 버튼 확대 */
+@media screen and (min-width: 1200px) {
+  .div4 button {
+    max-width: 300px;
+    font-size: 1.6rem;
+    padding: 2rem;
+  }
+}
+
+/* 태블릿 이하 */
+@media screen and (max-width: 768px) {
+  .div4 button {
+    max-width: 180px;
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
+
+
+.div4 button:hover {
+  transform: scale(1.05);
+}
+
+
+.div4 button:hover {
+    background-color: #5563c1;
+}
 
 .image {
-	width: 100%;
-	height: 80%;
-	object-fit: contain;
-	opacity: 0.8;
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.home {
-	background-color: lightgray;
-	text-align: center;
-}
 a {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: #333;
 }
 
-.logo-img {
-  width: 250px;         /* 적당한 크기 조절 */
-  max-width: 80%;       /* 반응형 지원 */
-  height: auto;         /* 가로 비율 유지 */
-  display: block;
-  margin: 0 auto;       /* 가운데 정렬 */
+a:hover {
+    color: #667eea;
 }
 
 .center-img {
-  display: block;
-  margin: 0 auto;
-  width: 100px; /* 너비는 원하는 값으로 */
+    display: block;
+    margin: 0 auto;
+    width: 80px;
 }

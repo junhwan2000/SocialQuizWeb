@@ -11,5 +11,5 @@
 	</script>
 </c:if>
 <c:if test="${result eq 1}">
-	<c:redirect url="logonrank"/>		
+	<c:redirect url="quiz/startox"/>		
 </c:if>

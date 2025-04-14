@@ -12,19 +12,8 @@ import rank.RankDBBean;
 
 @Controller
 public class RankController {
-
-    @Autowired
-    private RankDBBean rankService;
-
-    @GetMapping("/rank")
-    public String showRank(@RequestParam(value = "game_id", required = false, defaultValue = "1") int gameId, Model model) {
-        List<RankDataBean> rankList = rankService.getRankList(gameId);
-        String gameName = rankService.getGameNameById(gameId);
-
-        model.addAttribute("rankList", rankList);
-        model.addAttribute("gameName", gameName);
-        model.addAttribute("gameId", gameId);
-        model.addAttribute("count", rankList.size());
+    @GetMapping("/rank/rank")
+    public String showRank() {
 
         return "rank/rank";  // 실제로는 /webapp/rank/rank.jsp
     }

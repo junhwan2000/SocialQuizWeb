@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface OxMapper {
 	public List<OxDataBean> getOxQuiz();
-	public int submitScore();
+	public int submitScore(OxDataBean oxDto);
 }

@@ -7,12 +7,16 @@ let msg_email = "이메일을 입력하세요";
 let msg_confirm_user_id = "중복된 아이디 입니다.";
 let msg_confirm_nickname = "중복된 닉네임 입니다.";
 let msg_confirm_email = "중복된 이메일 입니다.";
+let msg_confirm_email_auth = "이메일 인증을 완료해주세요.";
+let msg_email_change = "비밀번호가 성공적으로 변경되었습니다.";
 
 let error_input = "회원가입에 실패했습니다.\n잠시 후 다시 시도하세요";
-let error_user_id = "입력하신 아이디가 없습니다.\n다시 확인하세요.";
-let error_passwd = "입력하신 비밀번호가 다릅니다.\n다시 확인하세요.";
+let error_login = "입력하신 아이디 또는 비밀번호가 일치하지 않습니다.\n다시 확인하세요.";
+let error_passwd = "비밀번호가 일치하지 않습니다.\n다시 입력하세요.";
 let error_delete = "회원탈퇴에 실패했습니다.\n잠시 후 다시 시도하세요";
 let error_modify = "회원정보수정에 실패했습니다.\n잠시 후 다시 시도하세요";
+let error_id_incorrect =  "아이디가 일치하지 않습니다. \n다시 확인해주세요.";
+let error_passwd_duplicate ="기존 비밀번호와 동일합니다. \n다른 비밀번호를 입력해주세요.";
 
 let erroralert = ( msg ) => {
 	alert( msg );
@@ -170,7 +174,82 @@ let setuser_id = ( userId ) => {
 	window.close();			
 }	
 
+let lastSentEmail = null;
 
+function sendEmailAuthCode() {
+    const form = document.forms['inputform'];
+    const email = form['email'].value.trim();
+    const authInput = form['emailAuth']?.value?.trim(); // 인증번호 입력 필드가 있을 경우
+
+	alert(email);
+    if (!email) {
+        alert('이메일을 입력해주세요!');
+        return;
+    }
+
+    if (email === lastSentEmail) {
+        // 인증번호 입력란이 있어야 함
+        if (!authInput) {
+            alert('이미 인증번호를 보냈습니다. \n메일을 확인한 후 인증번호를 입력해주세요.');
+            return;
+        }
+
+        // 인증번호 확인 요청
+        fetch('sendmailcheck', {
+		    method: 'POST',
+		    headers: {
+		        'Content-Type': 'application/x-www-form-urlencoded',
+		    },
+		    body: 'emailAuth=' + encodeURIComponent(authInput)
+		})
+		.then(response => response.json())
+		.then(data => {
+		    if (data.verified) {
+		        alert('이메일 인증에 성공했습니다!');
+				form['email'].readOnly = true;
+				form['emailAuth'].readOnly = true;
+				form['email'].style.backgroundColor = '#eee';
+				form['emailAuth'].style.backgroundColor = '#eee';				
+				document.getElementById('emailAuthBtn').style.display = "none";
+				document.getElementById('emailVerified').value = "true";
+		        // 추가 인증 성공 처리
+		    } else {
+		        alert('인증번호가 올바르지 않습니다.');
+		    }
+		})
+		.catch(error => {
+		    console.error('에러 발생:', error);
+		    alert('서버 오류가 발생했습니다.');
+		});
+
+
+        return;
+    }
+
+	fetch('sendmail', {
+	    method: 'POST',
+	    headers: {
+	        'Content-Type': 'application/x-www-form-urlencoded',
+	    },
+	    body: 'email=' + encodeURIComponent(email)+ '&emailVerified=false'
+	})
+	.then(response => response.text())
+	.then(result => {
+	    if (result === 'success') {
+	        lastSentEmail = email;
+	        alert('인증번호가 이메일로 전송되었습니다!');
+	    } else if (result === 'duplicate') {
+	        alert('중복된 이메일입니다! 다른 이메일을 사용해주세요.');
+	    } else {
+	        alert('이메일 전송 실패');
+	    }
+	})
+	.catch(error => {
+	    console.error('에러 발생:', error);
+	    alert('서버 오류가 발생했습니다.');
+	});
+
+}
 
 
 

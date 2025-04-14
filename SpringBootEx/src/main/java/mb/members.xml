@@ -2,54 +2,33 @@
 <!DOCTYPE mapper
   	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="logon.LogonMapper">
- 	<insert id="insertMember" parameterType="logon.LogonDataBean">
- 		INSERT INTO members (userId, passwd, nickname, auth, email, block_id)
-		VALUES (#{userId}, #{passwd}, #{nickname},'ROLE_MEMBER' ,#{email, jdbcType=VARCHAR}, '0')
- 	</insert>
+
+ <mapper namespace="logon.MemberMapper">
  	
- 	<select id="check" parameterType="String" resultType="int">
- 		select count(*) from members where userId=#{userId}
- 	</select>
- 	
- 	<select id="checkNickname" parameterType="String" resultType="int">
- 		select count(*) from members where nickname=#{nickname}
- 	</select>
- 	
- 	<select id="checkEmail" parameterType="String" resultType="int">
- 		select count(*) from members where email=#{email}
- 	</select>
- 	
- 	<delete id="deleteMember" parameterType="String">
- 		delete from members where userId=#{userId}
- 	</delete>
+
  	
  	<select id="getMember" parameterType="String" resultType="logon.LogonDataBean">
  		select * from members where userId = #{userId}	
-
  	</select>
  	
  	<update id="modifyMember" parameterType="logon.LogonDataBean">
  		update members set passwd=#{passwd}, 
  		email=#{email, jdbcType=VARCHAR}
- 		where userId=#{userId}
+ 		where user_id=#{userId}
  	</update>
+
+
  	
- 	<resultMap id="MemberMap" type="security.Members">
-	    <result property="userId" column="user_id" />
-	    <result property="passwd" column="passwd" />
-	    <result property="nickname" column="nickname" />
-	    <result property="email" column="email" />
-	    <result property="auth" column="auth" />
-	    <result property="createdAt" column="created_at" />
-	</resultMap>
- 	<select id="findByUserId" parameterType="string" resultMap="MemberMap"> 
- 		SELECT * FROM members WHERE user_id = #{userId} 
+ 		<select id="findPasswd" parameterType="String" resultType="String">
+ 		select passwd from members where userId = #{userId}	
  	</select>
  	
-
+	<update id="changePasswd" parameterType="logon.LogonDataBean">
+ 		update members set passwd=#{passwd}
+ 		where userId=#{userId}
+ </update>
+ 	<select id="findByUserId" parameterType="String" resultType="String"> 
+ 	SELECT auth FROM members WHERE userId=#{userId} 
+ 	</select>
  </mapper>
- 
- 
-
  

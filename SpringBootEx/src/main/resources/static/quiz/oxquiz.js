@@ -1,4 +1,4 @@
-let quizData = [];
+let quizData = [];			// 여기서 길이가 없으니까 시작할때 퀴즈종료가 뜨고 그 이후에 문제를 받아오니까 그런거얌
 
 let count = 0; 				// 푼 문제수 체크하는거
 let num = 0;   				// 맞춘 문제수
@@ -6,36 +6,13 @@ let time = 10;  			// 시간
 let interval;  				// 타이머 
 let gameOver = false; 		// 이게 게임 끝났는지 확인하는 변수 true면 게임오버 false면 게임중
 
-const tspan = document.querySelector("#timeout");	// 마지막문제를 풀어서 게임이 끝나는거랑 
-const qdiv = document.querySelector(".question");	// 마지막문제를 시간초과해서 게임 끝나는거 구현하려고 변수 밖으로 뺌
+let tspan; 	// 마지막문제를 풀어서 게임이 끝나는거랑 
+let qdiv;	// 마지막문제를 시간초과해서 게임 끝나는거 구현하려고 변수 밖으로 뺌
 
-// OX 점수 랭크 연동
-function submitScore( game_id, userId, record_time, game_score ) {
-	fetch( "/quiz/startox", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body:  JSON.stringify({
-			game_id: game_id,
-			userId: userId,
-			record_time: record_time,
-			game_score: game_score
-		})
-		
-	})
-	.then( response => {
-		if (!response.ok) {
-			throw new Error( "서버 전송 실패" );
-		}
-	})
-	.then( data => {
-		console.log( "서버 응답", data );
-	})
-	.catch( error => {
-		console.error( "에러:", error );
-	});
-}
+let game_id;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
+let userId;
+let record_time;
+let game_score;
 
 // 문제보여주는거 
 function showQuestion(index) {		
@@ -70,15 +47,44 @@ function startTimer() {
                 gameOver = true;
 				
 			// num 값을 서버에 넘겨야 함
-			const userId = document.querySelector( "#userId" )?.value;
-			const game_id = 1;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
-			const game_score = num;
-			const record_time = 100; // 총 플레이 시간을 넣어야 함.
-			submitScore( game_id, userId, record_time, game_score);
-				
+			game_id = 1;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
+			userId = document.querySelector("#userId")?.value;
+			console.log("세션에서 넘어온 유저 ID:", userId);
+			record_time = Date.now();
+			game_score = num;
+			console.log(game_id, userId, record_time, game_score);
+			submitScore( game_id, userId, record_time, game_score );
             }
         }
     }, 1000);	
+}
+
+
+// OX 점수 랭크 연동
+function submitScore( game_id, userId, record_time, game_score ) {
+	fetch( "/quiz/startox", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			game_id: game_id,
+			userId: userId,
+			record_time: record_time,
+			game_score: game_score
+		})
+	})
+	.then( response => {
+		if (!response.ok) {
+			throw new Error( "서버 전송 실패" );
+		}
+	})
+	.then( data => {
+		console.log( "서버 응답", data );
+	})
+	.catch( error => {
+		console.error( "에러:", error );
+	});
 }
 
 function resetGame() {		// 겜 다시할때
@@ -109,19 +115,25 @@ function checkAnswer(userInput) {		// 정답체크
         gameOver = true;
 		
 		// num 값을 서버에 넘겨야 함
-		const userId = document.querySelector( "#userId" )?.value;
-		const game_id = 1;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
-		const game_score = num;
-		const record_time = 100; // 총 플레이 시간을 넣어야 함.
+		game_id = 1;		// OX : 1 / 끝말잇기 : 2 / 라이어 : 3 이라는 가정하에
+		userId = document.querySelector("#userId")?.value;
+		console.log("세션에서 넘어온 유저 ID:", userId);
+		record_time = Date.now();
+		game_score = num;
+		console.log(game_id, userId, record_time, game_score);
 		submitScore( game_id, userId, record_time, game_score);
     }
 }
 
 window.addEventListener( "DOMContentLoaded", () => {
-	
-	fetch( "/quiz/startox" )
+	qdiv = document.querySelector(".question");
+	tspan = document.querySelector("#timeout");
+	fetch( "/quiz/oxquiz",{
+		method: "GET"
+	 	})
 		.then( response => response.json() )
 		.then( data => {
+			console.log("받은퀴즈데이터:", data);
 			quizData = data.map( quiz => ({
 				question: quiz.question,
 				answer: quiz.answer

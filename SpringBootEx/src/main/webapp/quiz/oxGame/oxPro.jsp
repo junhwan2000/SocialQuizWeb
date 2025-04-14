@@ -9,6 +9,6 @@
 	</script>
 </c:if>
 <c:if test="${result eq 1}">
-	<c:redirect url="startox"/>		
+	<c:redirect url="selectquiz"/>		
 </c:if>
 

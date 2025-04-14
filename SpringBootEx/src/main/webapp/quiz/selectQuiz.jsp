@@ -9,7 +9,7 @@
 </head>
 <br>
   <div class="position-absolute top-0 end-0 m-3">
-    <a href="${request.getContextPath()}/logonmain" class="btn btn-outline-primary">메인페이지</a>
+    <a href="../home" class="btn btn-outline-primary">메인페이지</a>
   </div>
 
 <br>

@@ -7,5 +7,10 @@
  	<select id="getOxQuiz" resultType="game.OxDataBean">
  		SELECT question, answer FROM quizzes
  	</select>
+ 
+ 	<insert id="submitScore" parameterType="game.OxDataBean">
+ 		INSERT INTO game_records ( game_id, userId, record_time, game_score ) 
+ 		VALUES ( #{game_id}, #{userId}, #{record_time}, #{game_score} )
+ 	</insert>
  	
  </mapper>

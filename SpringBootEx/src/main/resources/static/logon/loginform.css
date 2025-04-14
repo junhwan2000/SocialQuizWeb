@@ -71,3 +71,7 @@ body{
 .inputbutton[value = "Sign in"]:hover{
    border: 1px solid black;
 }
+.no-underline {
+    text-decoration: none;
+    color: inherit; /* 링크 색도 기본 텍스트 색으로 */
+}
